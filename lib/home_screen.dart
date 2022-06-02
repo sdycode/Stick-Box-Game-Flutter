@@ -2,11 +2,18 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+import 'package:stick_box/app_drawer.dart';
+import 'package:stick_box/customshape.dart';
 import 'package:stick_box/grid_page.dart';
+import 'package:stick_box/provder.dart';
 
+import 'comp_gridPage.dart';
 import 'constants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,227 +23,707 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  TextEditingController p1controller = TextEditingController(text: 'Player 1');
+  TextEditingController p2controller = TextEditingController(text: 'Player 2');
+
+  TextEditingController compcontroller =
+      TextEditingController(text: 'Computer');
+  late vp p;
   List<int> boxesinrow = [9, 17, 25, 33, 41, 49, 57, 65, 73];
   int whichGridNo = 0;
   int playerNo = 0;
   int p1no = 0;
   int p2no = 4;
- AudioPlayer audioPlayer = AudioPlayer();
+  bool isSingle = true;
+  String p1name = 'Player 1';
+  String p2name = 'Computer';
+  AudioPlayer audioPlayer = AudioPlayer();
   AudioCache audioCache = AudioCache();
+  List<double> offs = [0, 31];
+  late Animation<double> lanimation;
+  late AnimationController lcontroller;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     audioCache.load('tap2.mp3');
-   
+    lcontroller = AnimationController(
+        duration: const Duration(milliseconds: 800), vsync: this);
+    lanimation = Tween<double>(begin: -300, end: 0).animate(lcontroller)
+      ..addListener(() {
+        setState(() {
+          // The state that has changed here is the animation object’s value.
+        });
+      });
+    lcontroller.forward();
+    // gridController = ScrollController()
+    //   ..addListener(() {
+    //     setState(() {
+    //        offs[0]= offs[1];
+    //       offs[1]= gridController.offset;
+
+    //        if((offs[0]-offs[1]).abs() >5){
+    //          whichGridNo = (gridController.offset / (100 +whichGridNo*5)).toInt();
+    //       // ${gridController.position}
+    //        print("offset  ${whichGridNo}  = ${gridController.offset}  --");
+    //     //
+    //     //    print("offset =    ${gridController.offset}  =====  ${(offs[0]-offs[1]).abs()}   ");
+    //      }
+
+    //     });
+    //     // if(gridController.offset)
+    //     // print("offset  ${gridController.position} = ${gridController.offset}  -- ${gridController.}");
+    //     // setState(() {
+    //     //   print('offf ${gridController.offset}');
+    //     //   // _offset = gridController.offset;
+    //     // });
+    //     //  if(gridController.position )
+
+    //     //
+    //   });
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
 
     audioPlayer.release();
-    
   }
+
+  double cellw = 5;
+  double hlinew = 50;
+  double hlineh = 5;
+  double vlinew = 5;
+  double vlineh = 50;
+  double box = 50;
+  List<Offset> hPoints = [];
+  List<Offset> vPoints = [];
+  ScrollController gridController = ScrollController();
+  double t = 24;
+  double circleh = 0.065;
+  double circlehinner = 0.06;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
-    double t = MediaQuery.of(context).viewPadding.top;
+    t = MediaQuery.of(context).viewPadding.top;
+    p = Provider.of<vp>(context);
+
     // h = h - t;
+    print('offff  ---------------------${w * 0.9}');
     return WillPopScope(
       onWillPop: () async {
         exit(0);
         return true;
       },
       child: Scaffold(
+        key: _scaffoldKey,
+        endDrawer: AppDrawer(),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: Colors.white,
+        //   onPressed: () {
+
+        // },
+        // child: Image.asset('assets/menu.png'), ),
         body: Container(
           height: h,
           width: w,
-          child: Column(
-            children: [
-              Container(
-                height: w * 0.34 * 2 + t,
-                width: w,
-                // color: Colors.pink.shade100,
-                child: GridView.builder(
-                    itemCount: 6,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3),
-                    itemBuilder: (c, i) {
-                      double wi = w * 0.3;
-                      int gridno = i + 1;
-                      double boxsize =
-                          (((wi) ~/ boxesinrow[i]) * boxesinrow[i]).toDouble();
+          //
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/bg1.jpg'), fit: BoxFit.cover),
+          ),
+          child: Stack(children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: InkWell(
+                  onTap: () {
+                    _scaffoldKey.currentState!.openEndDrawer();
+                  },
+                  child: Container(
+                      margin:
+                          EdgeInsets.only(top: t + w * 0.04, right: w * 0.04),
+                      child: Image.asset(
+                        'assets/menudots.png',
+                        height: w * 0.08,
+                      ))),
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  height: t,
+                ),
+                Spacer(),
+                // Stack(
+                //   children: [
+                //     Container(
+                //       width: double.infinity,
+                //       child: Image,
+                //     ),
+                //   ],
+                // )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Transform.translate(
+                      offset: Offset(lanimation.value, 0),
+                      child: Image.asset(
+                        'assets/stick.png',
+                        height: h * 0.1,
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(-lanimation.value, 0),
+                      child: Image.asset(
+                        'assets/box.png',
+                        height: h * 0.1,
+                      ),
+                    ),
+                    // TweenAnimationBuilder(curve: Curves.bounceOut,
+                    //     builder:
+                    //         (BuildContext context, Offset? value, Widget? child) {
+                    //       return Transform.translate(offset: value!,
 
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            whichGridNo = i;
-                          });
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: ((context) => GridPage(i + 1))));
+                    //        child: Image.asset(
+                    //       'assets/stick.png',
+                    //       height: h * 0.1,
+                    //     )
+                    //       ,);
+                    //     },
+                    //     duration: Duration(milliseconds: 1200),
+                    //     tween: Tween<Offset>(begin: Offset(-100,0), end: Offset.zero ),
+                    //     ),
+                    // TweenAnimationBuilder(
+                    //   curve: Curves.bounceOut,
+                    //     builder:
+                    //         (BuildContext context, Offset? value, Widget? child) {
+                    //       return Transform.translate(offset: value!,
+
+                    //        child: Image.asset(
+                    //       'assets/box.png',
+                    //       height: h * 0.1,
+                    //     )
+                    //       ,);
+                    //     },
+                    //     duration: Duration(milliseconds: 1200),
+                    //     tween: Tween<Offset>(begin: Offset(100,0), end: Offset.zero ),
+                    //     ),
+                  ],
+                ),
+                Spacer(),
+
+                Container(
+                    height: w * 0.2 * 2 - t,
+                    width: w,
+                    decoration: BoxDecoration(
+                        // image: DecorationImage(
+                        //     image: AssetImage(
+                        // 'assets/frame3.png',
+                        //     ),
+                        //     fit: BoxFit.fill)
+                        //  color: Colors.pink.shade100,
+                        ),
+
+                    // padding: EdgeInsets.all(w * 0.18),
+                    padding: EdgeInsets.only(
+                        // left: w * 0.06,
+                        // right: w * 0.06,
+                        top: w * 0.005,
+                        bottom: w * 0.005),
+                    child: Center(
+                      child: CarouselSlider.builder(
+                        itemBuilder:
+                            (BuildContext context, int i, int realIndex) {
+                          // whichGridNo = (i - 1) % 6;
+                          // print('whichg  $whichGridNo');
+                          // double wi = w * 0.9;
+                          // int gridno = i + 1;
+                          // double boxsize =
+                          //     (((wi) ~/ boxesinrow[i + 1]) * boxesinrow[i + 1])
+                          //         .toDouble();
+
+                          // cellw = boxsize / boxesinrow[gridno];
+                          // print('boxx $i -  $boxsize  $cellw');
+                          // hlinew = cellw * 7;
+                          // hlineh = cellw;
+                          // vlinew = cellw;
+                          // vlineh = cellw * 7;
+                          // box = cellw * 7;
+
+                          // List<int> hx = List.generate(i + 1, (d) {
+                          //   return d;
+                          // });
+                          // List<int> hy = List.generate(i + 2, (d) {
+                          //   return d;
+                          // });
+                          // hPoints.clear();
+                          // vPoints.clear();
+                          // for (int j = 0; j < i + 3; j++) {
+                          //   for (int k = 0; k < i + 2; k++) {
+                          //     hPoints.add(
+                          //         Offset(cellw + 8 * cellw * k, 8 * cellw * j));
+                          //     vPoints.add(
+                          //         Offset(8 * cellw * j, cellw + 8 * cellw * k));
+                          //     if (i == 0) {
+                          //       // print("poinss $hPoints");
+                          //     }
+                          //   }
+                          // }
+
+                          // print('hx $hx  , $hy');
+                          return InkWell(
+                            onTap: () {
+                              setState(() {
+                                whichGridNo = i;
+                                // gridno = i + 1;
+                                // boxsize = (((wi) ~/ boxesinrow[i + 1]) *
+                                //         boxesinrow[i + 1])
+                                //     .toDouble();
+                                // cellw = boxsize / boxesinrow[gridno];
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (c) => ShapeScreen(hPoints,
+                                //             vPoints, cellw, cellw * 7, i + 1)));
+                              });
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: ((context) => GridPage(i + 1))));
+                            },
+                            child:
+                                // Container(
+                                //   height: boxsize,
+                                //   width: boxsize,
+                                //   color: Colors.pink.shade200.withAlpha(250),
+                                //   child: myWrapGrid(boxsize, (i +1) * 2 + 3, i+1),
+                                // ),
+
+                                Transform.scale(
+                              scale: whichGridNo == i ? 1.1 : 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: whichGridNo == i
+                                        ? Border.all(width: 2)
+                                        : null),
+                                margin: EdgeInsets.all(w * 0.04),
+                                padding: EdgeInsets.all(w * 0.011),
+                                child: Image.asset(
+                                  C.gridimgs[i],
+                                  color: C.gridcolors[i],
+                                ),
+                                // grid(i, w * 0.20)
+
+                                // Center(4
+                                //   child: Text('${i + 2} x ${i + 2} '),
+                                // ),
+                              ),
+                            ),
+                          );
                         },
-                        child:
-                            // Container(
-                            //   height: boxsize,
-                            //   width: boxsize,
-                            //   color: Colors.pink.shade200.withAlpha(250),
-                            //   child: myWrapGrid(boxsize, (i +1) * 2 + 3, i+1),
-                            // ),
+                        itemCount: 6,
+                        options: CarouselOptions(
+                            pauseAutoPlayOnManualNavigate: true,
+                            pauseAutoPlayOnTouch: true,
+                            onPageChanged: (d, s) {
+                              setState(() {
+                                whichGridNo = d;
+                                print('whichbg page $whichGridNo');
+                              });
+                            },
+                            enlargeCenterPage: true,
+                            autoPlay: false,
+                            viewportFraction: 0.55),
+                      ),
+                    )
+                    // GridView.builder(
+                    //     controller: gridController,
+                    //     findChildIndexCallback: (j) {
+                    //       print("printttt grid $j");
+                    //     },
+                    //     // padding: EdgeInsets.all(0),
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemCount: 6,
+                    //     gridDelegate:
+                    //         const SliverGridDelegateWithFixedCrossAxisCount(
+                    //             crossAxisCount: 1),
+                    //     itemBuilder: (c, i) {
 
-                            Transform.scale(
-                          scale: whichGridNo == i ? 1.2 : 1,
+                    //     }),
+
+                    ),
+                Spacer(),
+                Container(
+                  height: h * circleh * 1.2,
+                  width: w,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: C.icons.length - 1,
+                      itemBuilder: (c, i) {
+                        return InkWell(
+                          onTap: () {
+                            lcontroller.reset();
+                            lcontroller.stop();
+                            lcontroller.forward();
+                            audioCache.play('boxmarked.mp3');
+                            setState(() {
+                              if (playerNo == 0 && p2no != i) {
+                                p1no = i;
+                              }
+                              if (playerNo == 1 && p1no != i) {
+                                p2no = i;
+                              }
+                            });
+                          },
                           child: Container(
-                              decoration: BoxDecoration(
-                                  border: whichGridNo == i
-                                      ? Border.all(width: 2)
-                                      : null),
-                              margin: EdgeInsets.all(w * 0.041),
-                              padding: EdgeInsets.all(w * 0.011),
-                              child: grid(i, w * 0.28)
-
-                              // Center(4
-                              //   child: Text('${i + 2} x ${i + 2} '),
+                              // color:   Colors.red.withAlpha(i*10+50),
+                              padding: EdgeInsets.all(h * circleh * 0.1),
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.circular(h * circleh * 0.8),
+                                child: Image.asset(C.icons[i]),
+                              )
+                              //  CircleAvatar(
+                              //   backgroundColor: Colors.white,
+                              //   radius: h * circleh*0.8,
+                              //   backgroundImage: AssetImage(C.icons[i]),
                               // ),
                               ),
-                        ),
-                      );
-                    }),
-              ),
-              Spacer(),
-              Container(
-                height: h * 0.1,
-                width: w,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: C.icons.length,
-                    itemBuilder: (c, i) {
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            if (playerNo == 0 && p2no != i) {
-                              p1no = i;
-                            }
-                            if (playerNo == 1 && p1no != i) {
-                              p2no = i;
-                            }
-                          });
-                        },
-                        child: Container(
-                          // color:   Colors.red.withAlpha(i*10+50),
-                          padding: EdgeInsets.all(h * 0.01),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: h * 0.05,
-                            backgroundImage: AssetImage(C.icons[i]),
+                        );
+                      }),
+                ),
+                Spacer(),
+                isSingle
+                    ? Row(
+                        children: [
+                          Column(
+                            children: [
+                              CircleAvatar(
+                                radius: h * circleh,
+                                backgroundColor: playerNo == 0
+                                    ? Colors.black
+                                    : Colors.grey.shade200,
+                                child: InkWell(
+                                  radius: h * circleh,
+                                  onTap: () {
+                                    setState(() {
+                                      playerNo = 0;
+                                    });
+                                  },
+                                  child: CircleAvatar(
+                                    radius: h * circlehinner,
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: AssetImage(
+                                      C.icons[p1no],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(h * 0.02),
+                                child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(h * 0.02 * 0),
+                                  child: Container(
+                                    height: h * circlehinner,
+                                    width: w * 0.4,
+                                    child:
+                                        Image.asset('assets/player1nobg.webp'),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      );
-                    }),
-              ),
-              Spacer(),
-              Row(
-                children: [
-                  Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            playerNo = 0;
-                          });
-                        },
-                        child: CircleAvatar(
-                          radius: h * 0.085,
-                          backgroundColor: playerNo == 0
-                              ? Colors.black
-                              : Colors.grey.shade200,
-                          child: CircleAvatar(
-                            radius: h * 0.08,
-                            backgroundColor: Colors.white,
-                            backgroundImage: AssetImage(
-                              C.icons[p1no],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(h * 0.02),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(h * 0.02 * 0),
-                          child: Container(
-                            height: h * 0.08,
-                            width: w * 0.4,
-                            child: Image.asset('assets/player1nobg.webp'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            playerNo = 1;
-                          });
-                        },
-                        child: CircleAvatar(
-                          radius: h * 0.085,
-                          backgroundColor: playerNo != 0
-                              ? Colors.black
-                              : Colors.grey.shade200,
-                          child: CircleAvatar(
-                            radius: h * 0.08,
-                            backgroundColor: Colors.white,
-                            backgroundImage: AssetImage(
-                              C.icons[p2no],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(h * 0.02),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(h * 0.02 * 0),
-                          child: Container(
-                            height: h * 0.08,
-                            width: w * 0.4,
-                            child: Image.asset('assets/player2nobg.webp'),
-                          ),
-                        ),
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () {},
+                                child: CircleAvatar(
+                                    radius: h * circleh,
+                                    backgroundColor: Colors.black,
+                                    child: CircleAvatar(
+                                      radius: h * circleh * 0.97,
+                                      backgroundColor: Colors.white,
+                                      // backgroundImage: AssetImage(
+                                      //   C.icons.last,
+                                      // ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          h * circleh * 0.95,
+                                        ),
+                                        child: Container(
+                                          height: h * circleh * 2 * 0.95,
+                                          width: h * circleh * 2 * 0.95,
+                                          padding: EdgeInsets.all(h * 0.01),
+                                          child: Image.asset(
+                                            C.icons.last,
+                                            fit: BoxFit.fitHeight,
+                                          ),
+                                        ),
+                                      ),
+                                    )),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(h * 0.02),
+                                child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(h * 0.02 * 0),
+                                  child: Container(
+                                    height: h * circlehinner,
+                                    width: w * 0.4,
+                                    child: Image.asset('assets/comp.png'),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
                       )
-                    ],
-                  )
-                ],
-              ),
-              Spacer(),
-              InkWell(
-                onTap: () {
-                   audioCache.play('tap2.mp3');
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (c) =>
-                              GridPage(whichGridNo + 1, p1no, p2no)));
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(h * 0.02),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(h * 0.02),
-                    child: Container(
-                      height: h * 0.1,
-                      width: w * 0.7,
-                      child: FittedBox(
-                          fit: BoxFit.cover,
-                          child: Image.asset('assets/play1.webp')),
+                    : Row(
+                        children: [
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    playerNo = 0;
+                                  });
+                                },
+                                child: CircleAvatar(
+                                  radius: h * circleh,
+                                  backgroundColor: playerNo == 0
+                                      ? Colors.black
+                                      : Colors.grey.shade200,
+                                  child: CircleAvatar(
+                                    radius: h * circlehinner,
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: AssetImage(
+                                      C.icons[p1no],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(h * 0.02),
+                                child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(h * 0.02 * 0),
+                                  child: Container(
+                                    height: h * circlehinner,
+                                    width: w * 0.4,
+                                    child:
+                                        Image.asset('assets/player1nobg.webp'),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    playerNo = 1;
+                                  });
+                                },
+                                child: CircleAvatar(
+                                  radius: h * circleh,
+                                  backgroundColor: playerNo != 0
+                                      ? Colors.black
+                                      : Colors.grey.shade200,
+                                  child: CircleAvatar(
+                                    radius: h * circlehinner,
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: AssetImage(
+                                      C.icons[p2no],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(h * 0.02),
+                                child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(h * 0.02 * 0),
+                                  child: Container(
+                                    height: h * circlehinner,
+                                    width: w * 0.4,
+                                    child:
+                                        Image.asset('assets/player2nobg.webp'),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isSingle = true;
+                          playerNo = 0;
+                          audioCache.play('smalltap.mp3');
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(w * 0.04),
+                            border: isSingle
+                                ? Border.all(width: 2, color: Colors.orange)
+                                : null,
+                            boxShadow: isSingle
+                                ? [
+                                    BoxShadow(
+                                        color: Colors.deepOrange,
+                                        offset: Offset(0.5, 0.51),
+                                        spreadRadius: 1,
+                                        blurRadius: 1.5)
+                                  ]
+                                : []),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(w * 0.04),
+                          child: Image.asset(
+                            'assets/single.gif',
+                            width: w * 0.36,
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isSingle = false;
+                          audioCache.play('smalltap.mp3');
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(w * 0.04),
+                            border: !isSingle
+                                ? Border.all(width: 2, color: Colors.orange)
+                                : null,
+                            boxShadow: !isSingle
+                                ? [
+                                    BoxShadow(
+                                        color: Colors.deepOrange,
+                                        offset: Offset(0.5, 0.51),
+                                        spreadRadius: 1,
+                                        blurRadius: 1.5)
+                                  ]
+                                : []),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(w * 0.04),
+                            child: Image.asset(
+                              'assets/two.gif',
+                              width: w * 0.36,
+                            )),
+                      ),
+                    )
+                  ],
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    audioCache.play('tap2.mp3');
+                    double wi = w * 0.9;
+                    int i = whichGridNo;
+                    // whichGridNo = i;
+                    double boxsize =
+                        (((wi) ~/ boxesinrow[i + 1]) * boxesinrow[i + 1])
+                            .toDouble();
+                    int gridno = i + 1;
+                    cellw = boxsize / boxesinrow[gridno];
+                    print(' randd ${wi} / ${i+1} / ${gridno} / ${boxsize} / ${cellw}');
+
+                    List<int> hx = List.generate(i + 1, (d) {
+                      return d;
+                    });
+                    List<int> hy = List.generate(i + 2, (d) {
+                      return d;
+                    });
+                    hPoints.clear();
+                    vPoints.clear();
+                    for (int j = 0; j < i + 3; j++) {
+                      for (int k = 0; k < i + 2; k++) {
+                        hPoints
+                            .add(Offset(cellw + 8 * cellw * k, 8 * cellw * j));
+
+                        if (i == 0) {
+                          print("poinss $hPoints");
+                        }
+                      }
+                    }
+                    for (int k = 0; k < i + 2; k++) {
+                      for (int j = 0; j < i + 3; j++) {
+                        vPoints
+                            .add(Offset(8 * cellw * j, cellw + 8 * cellw * k));
+                        if (i == 0) {
+                          print("poinss $hPoints");
+                        }
+                      }
+                    }
+                    p.initMusicCahce();
+                    p.startMusicLoop();
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (c) => ShapeScreen(
+                    //             hPoints, vPoints, cellw, cellw * 7, i + 1)));
+                    if (isSingle) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => CompGridPage(
+                                    whichGridNo + 1,
+                                    p1no,
+                                    C.icons.indexOf(C.icons.last),
+                                    hPoints,
+                                    vPoints,
+                                    cellw,
+                                    cellw * 7,
+                                  )));
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => GridPage(
+                                    whichGridNo + 1,
+                                    p1no,
+                                    p2no,
+                                    hPoints,
+                                    vPoints,
+                                    cellw,
+                                    cellw * 7,
+                                  )));
+                    }
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(h * 0.02),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(h * 0.02),
+                      child: Container(
+                        padding: EdgeInsets.all(h * 0.03),
+                        color: Colors.black,
+                        height: h * 0.1,
+                        width: w * 0.65,
+                        child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.asset('assets/play1.webp')),
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
-          ),
+                )
+              ],
+            ),
+          ]),
         ),
       ),
     );
@@ -347,12 +834,19 @@ class _HomeScreenState extends State<HomeScreen> {
     gap = 2;
     return Container(
       height: d,
-      width: d,
+      // width: d,
       padding: EdgeInsets.all(gap),
-      color: C.gridcolors[ind],
+      color:
+          // Colors.red,
+          C.gridcolors[ind],
       child: GridView.builder(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          padding: EdgeInsets.only(top: gap),
           itemCount: (ind + 2) * (ind + 2),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              // mainAxisExtent:d*0.5,
+              childAspectRatio: 1.2,
               crossAxisSpacing: gap,
               mainAxisSpacing: gap,
               crossAxisCount: ind + 2),

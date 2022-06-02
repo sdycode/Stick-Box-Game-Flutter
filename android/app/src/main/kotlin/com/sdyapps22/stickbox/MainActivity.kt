@@ -1,4 +1,4 @@
-package com.example.stick_box
+package com.sdyapps22.stickbox
 
 import io.flutter.embedding.android.FlutterActivity
 
