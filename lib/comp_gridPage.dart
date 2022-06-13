@@ -54,6 +54,7 @@ class _CompGridPageState extends State<CompGridPage>
   late AppLifecycleState _lastLifecycleState;
   @override
   void initState() {
+    computerplaytimeinmillisec = (400 / slidervalue).toInt();
     WidgetsBinding.instance.addObserver(this);
     print("wid ${widget.hPoints}");
     // audioCache = AudioCache(fixedPlayer: audioPlayer);
@@ -117,7 +118,7 @@ class _CompGridPageState extends State<CompGridPage>
   int whoWins = 0;
   double h = Sizes().sh;
   double w = Sizes().sw;
-  double slidervalue = 0.34;
+  double slidervalue = Shared.getCompSpeed();
   double volumeslidervalue = Shared.getVolume();
   bool showSettings = false;
 
@@ -248,16 +249,22 @@ class _CompGridPageState extends State<CompGridPage>
                       ),
                 ),
               ),
-
+SizedBox(
+  height: h*0.01,
+),
               showSettings
                   ? Container(
                       height: h * 0.05,
                       child: Row(
+                        mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Image.asset(
-                            'assets/compspeed.png',
-                            width: w * 0.3,
+                          Padding(
+                            padding:  EdgeInsets.all(w*0.005),
+                            child: Image.asset(
+                              'assets/computer3.png',
+                              width: w * 0.29,
+                            ),
                           ),
                           Container(
                             width: w * 0.7,
@@ -277,6 +284,7 @@ class _CompGridPageState extends State<CompGridPage>
                                   onChanged: (d) {
                                     setState(() {
                                       slidervalue = d;
+
                                       computerplaytimeinmillisec =
                                           (400 / d).toInt();
                                       print("dds $computerplaytimeinmillisec");
@@ -296,7 +304,8 @@ class _CompGridPageState extends State<CompGridPage>
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.only(top:h*0.006, bottom: h*0.006),
+                            padding: EdgeInsets.only(
+                                top: h * 0.006, bottom: h * 0.006),
                             child: Image.asset(
                               'assets/music.png',
                               width: w * 0.3,
@@ -339,7 +348,7 @@ class _CompGridPageState extends State<CompGridPage>
               iconswithCelebration(),
               // Spacer(),
               Container(
-                // color: Colors.red,
+                  // color: Colors.red,
                   child: ClipRRect(
                 child: Transform.translate(
                   offset: Offset(transOffset.dx, transOffset.dy + 50 * 0),
@@ -611,7 +620,7 @@ class _CompGridPageState extends State<CompGridPage>
               //       boxesinrow[gridno],
               // )
 
-              showSettings 
+              showSettings
                   ? Container()
                   : Container(
                       height: h * 0.08,
@@ -658,7 +667,7 @@ class _CompGridPageState extends State<CompGridPage>
                         children: [
                           Container(
                               height: h * 0.08,
-                              width: showSettings? w * 0.32:w*0.45,
+                              width: showSettings ? w * 0.32 : w * 0.45,
                               padding: EdgeInsets.all(h * 0.01),
                               decoration: BoxDecoration(
                                 color: C.p1color.withAlpha(30),
@@ -682,42 +691,45 @@ class _CompGridPageState extends State<CompGridPage>
                                   ),
                                 ],
                               )),
-                          showSettings?    Container(
-                                width: w*0.08,
-                                child: FittedBox(
-                                  child: Text(
-                                       getP1Count(),
-                                style: TextStyle(
-                                    fontSize: h * 0.04,
-                                    fontWeight: turn1
-                                        ? FontWeight.bold
-                                        : FontWeight.normal),
-                              
+                          showSettings
+                              ? Container(
+                                  width: w * 0.08,
+                                  child: FittedBox(
+                                    child: Text(
+                                      getP1Count(),
+                                      style: TextStyle(
+                                          fontSize: h * 0.04,
+                                          fontWeight: turn1
+                                              ? FontWeight.bold
+                                              : FontWeight.normal),
+                                    ),
                                   ),
-                                ),
-                              ):Container(),
-                           showSettings?   Container(
-                                height: h*0.04,
-                                width: 0.01,
-                              ):Container(),
-                          showSettings?      Container(
-                                width: w*0.08,
-                                child: FittedBox(
-                                  child: Text(
-                                       getP2Count(),
-                                style: TextStyle(
-                                    fontSize: h * 0.04,
-                                    fontWeight: turn1
-                                        ? FontWeight.bold
-                                        : FontWeight.normal),
-                              
+                                )
+                              : Container(),
+                          showSettings
+                              ? Container(
+                                  height: h * 0.04,
+                                  width: 0.01,
+                                )
+                              : Container(),
+                          showSettings
+                              ? Container(
+                                  width: w * 0.08,
+                                  child: FittedBox(
+                                    child: Text(
+                                      getP2Count(),
+                                      style: TextStyle(
+                                          fontSize: h * 0.04,
+                                          fontWeight: turn1
+                                              ? FontWeight.bold
+                                              : FontWeight.normal),
+                                    ),
                                   ),
-                                ),
-                              ):Container(),
-
+                                )
+                              : Container(),
                           Container(
                               height: h * 0.08,
-                              width: showSettings? w * 0.32:w*0.45,
+                              width: showSettings ? w * 0.32 : w * 0.45,
                               padding: EdgeInsets.all(h * 0.01),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(h * 0.03),
@@ -727,7 +739,6 @@ class _CompGridPageState extends State<CompGridPage>
                                     : null,
                               ),
                               child: InkWell(
-                               
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
@@ -736,7 +747,9 @@ class _CompGridPageState extends State<CompGridPage>
                                     Text(
                                       'Computer',
                                       style: TextStyle(
-                                          fontSize: showSettings?w*0.028: w * 0.043,
+                                          fontSize: showSettings
+                                              ? w * 0.028
+                                              : w * 0.043,
                                           fontWeight: !turn1
                                               ? FontWeight.bold
                                               : FontWeight.normal),
@@ -1179,27 +1192,25 @@ class _CompGridPageState extends State<CompGridPage>
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            // width: w * 0.28,
-            height: remaingH * 0.7,
+            width: w * 0.28,
+            // height: remaingH * 0.7,
 
             child: Image.asset(
               'assets/celeb.gif',
-              fit: BoxFit.contain,
+              // fit: BoxFit.contain,
             ),
           ),
           Container(
-              // width: w * 0.28,
-              height: remaingH * 0.7,
-              child: CircleAvatar(
-                radius: remaingH * 0.3,
-                backgroundColor: Colors.white.withAlpha(0),
-                backgroundImage: AssetImage(whoWins == 1
-                    ? C.icons[widget.p1no]
-                    : whoWins == 2
-                        ? C.icons[widget.p2no]
-                        : 'assets/monkey1.gif'),
-              )
-
+              width: w * 0.28,
+              // height: remaingH * 0.7,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Image.asset(whoWins == 1
+                  ? C.icons[widget.p1no]
+                  : whoWins == 2
+                      ? C.icons[widget.p2no]
+                      : 'assets/monkey1.gif')
               // ? Image.asset(
               //     C.icons[widget.p1no],
               //     fit: BoxFit.cover,
@@ -1212,8 +1223,8 @@ class _CompGridPageState extends State<CompGridPage>
           RotatedBox(
             quarterTurns: 3,
             child: Container(
-              // width: w * 0.28,
-              height: remaingH * 0.7,
+              width: w * 0.28,
+              // height: remaingH * 0.7,
               child: Image.asset(
                 'assets/celeb.gif',
                 fit: BoxFit.contain,
@@ -1289,6 +1300,7 @@ class _CompGridPageState extends State<CompGridPage>
         setState(() {
           showSettings = !showSettings;
           Shared.setVolume(p.sliderValue);
+          Shared.setCompSpeed(slidervalue);
         });
       },
       child: AnimatedSwitcher(
@@ -1334,20 +1346,20 @@ class _CompGridPageState extends State<CompGridPage>
           CircleAvatar(
             backgroundColor: Colors.white.withAlpha(0),
             backgroundImage: turn1 ? AssetImage('assets/circnobg.gif') : null,
-            radius: fullradius,
+            radius: ratio > 1.54 ? fullradius * 0.6 : fullradius,
             child: CircleAvatar(
               backgroundColor: Colors.white.withAlpha(0),
-              radius: innerRadius,
+              radius: ratio > 1.54 ? innerRadius * 0.6 : innerRadius,
               backgroundImage: AssetImage(C.icons[widget.p1no]),
             ),
           ),
           CircleAvatar(
-            radius: fullradius,
+            radius: ratio > 1.54 ? fullradius * 0.6 : fullradius,
             backgroundColor: Colors.white.withAlpha(0),
             backgroundImage: !turn1 ? AssetImage('assets/circnobg.gif') : null,
             child: CircleAvatar(
               backgroundColor: Colors.white.withAlpha(0),
-              radius: innerRadius,
+              radius: ratio > 1.54 ? innerRadius * 0.6 : innerRadius,
               backgroundImage: AssetImage(C.icons[widget.p2no]),
             ),
           )
@@ -1552,7 +1564,7 @@ class _CompGridPageState extends State<CompGridPage>
       Shared.incrementGameCompleteCount();
       print('intert count ${Shared.getGameCompletedCount()} --- ');
       if (Shared.getGameCompletedCount() % 3 == 0) {
-        // InterstitialAdsAdmob.instance.showInterstitialAd();
+        InterstitialAdsAdmob.instance.showInterstitialAd();
         if (Shared.getGameCompletedCount() % 20 == 0) {
           Shared.resetGameCompletCount(0);
         }

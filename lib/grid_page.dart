@@ -1278,25 +1278,39 @@ showSettings
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            // width: w * 0.28,
-            height: remaingH * 0.7,
+            width: w * 0.28,
+            // height: remaingH * 0.7,
             child: Image.asset(
               'assets/celeb.gif',
-              fit: BoxFit.cover,
+
             ),
           ),
           Container(
-              // width: w * 0.28,
-              height: remaingH * 0.7,
-              child: CircleAvatar(
-                radius: remaingH * 0.3,
-                backgroundColor: Colors.white.withAlpha(0),
-                backgroundImage: AssetImage(whoWins == 1
-                    ? C.icons[widget.p1no]
-                    : whoWins == 2
-                        ? C.icons[widget.p2no]
-                        : 'assets/monkey1.gif'),
-              )
+              width: w * 0.28,
+              // height: remaingH * 0.7,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+
+              ),
+              child:
+                  Image.asset(
+                      whoWins == 1
+                          ? C.icons[widget.p1no]
+                          : whoWins == 2
+                          ? C.icons[widget.p2no]
+                          : 'assets/monkey1.gif'
+                  )
+
+
+              // CircleAvatar(
+              //   radius: remaingH * 0.35,
+              //   backgroundColor: Colors.white.withAlpha(0),
+              //   backgroundImage: AssetImage(whoWins == 1
+              //       ? C.icons[widget.p1no]
+              //       : whoWins == 2
+              //           ? C.icons[widget.p2no]
+              //           : 'assets/monkey1.gif'),
+              // )
 
               // ? Image.asset(
               //     C.icons[widget.p1no],
@@ -1310,11 +1324,11 @@ showSettings
           RotatedBox(
             quarterTurns: 3,
             child: Container(
-              // width: w * 0.28,
-              height: remaingH * 0.7,
+              width: w * 0.28,
+              // height: remaingH * 0.7,
               child: Image.asset(
                 'assets/celeb.gif',
-                fit: BoxFit.cover,
+
               ),
             ),
           ),
@@ -1340,20 +1354,20 @@ showSettings
           CircleAvatar(
             backgroundColor: Colors.white.withAlpha(0),
             backgroundImage: turn1 ? AssetImage('assets/circnobg.gif') : null,
-            radius: fullradius,
+            radius: ratio > 1.54 ? fullradius*0.6 :fullradius,
             child: CircleAvatar(
               backgroundColor: Colors.white.withAlpha(0),
-              radius: innerRadius,
+              radius: ratio > 1.54 ? innerRadius*0.6 :innerRadius,
               backgroundImage: AssetImage(C.icons[widget.p1no]),
             ),
           ),
           CircleAvatar(
-            radius: fullradius,
+            radius: ratio > 1.54 ? fullradius*0.6 :fullradius,
             backgroundColor: Colors.white.withAlpha(0),
             backgroundImage: !turn1 ? AssetImage('assets/circnobg.gif') : null,
             child: CircleAvatar(
               backgroundColor: Colors.white.withAlpha(0),
-              radius: innerRadius,
+              radius: ratio > 1.54 ? innerRadius*0.6 :innerRadius,
               backgroundImage: AssetImage(C.icons[widget.p2no]),
             ),
           )
@@ -1384,7 +1398,7 @@ showSettings
       Shared.incrementGameCompleteCount();
       print('intert count ${Shared.getGameCompletedCount()} --- ');
       if (Shared.getGameCompletedCount() % 3 == 0) {
-        // InterstitialAdsAdmob.instance.showInterstitialAd();
+        InterstitialAdsAdmob.instance.showInterstitialAd();
         if (Shared.getGameCompletedCount() % 20 == 0) {
           Shared.resetGameCompletCount(0);
         }

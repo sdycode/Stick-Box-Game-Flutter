@@ -17,6 +17,13 @@ class Shared {
     pref.setDouble('volume', d);
   }
 
+
+ static double getCompSpeed() {
+    return pref.getDouble('speed') ?? 0.4;
+  }
+  static setCompSpeed(double d) {
+    pref.setDouble('speed', d);
+  }
   static int gameCompleted = pref.getInt('game') ?? 0;
 
   static void incrementGameCompleteCount() {

@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stick_box/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,6 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    // getPackageInfo();
     super.initState();
     // audioCache.load('win.mp3');
     // audioCache.play('win.mp3');
@@ -89,5 +90,15 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> getPackageInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    String appName = packageInfo.appName;
+    String packageName = packageInfo.packageName;
+    String version = packageInfo.version;
+    String buildNumber = packageInfo.buildNumber;
+    // print('appversion $version  && $buildNumber');
   }
 }
