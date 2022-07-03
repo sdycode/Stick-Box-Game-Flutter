@@ -40,10 +40,17 @@ class C {
     "assets/grid6.png",
     "assets/grid7.png"
   ];
-  static String appsharelink = 'https://play.google.com/store/apps/details?id=com.sdyapps22.stickbox';
-  static String playstorelink = 'https://play.google.com/store/apps/developer?id=Shubham+Yeole';
- static String linkedinlink = 'https://www.linkedin.com/in/shubham-yeole-344307109/';
+  static String appsharelink =
+      'https://play.google.com/store/apps/details?id=com.sdyapps22.stickbox';
+  static String playstorelink =
+      'https://play.google.com/store/apps/developer?id=Shubham+Yeole';
+  static String linkedinlink =
+      'https://www.linkedin.com/in/shubham-yeole-344307109/';
+  static String youtubevideolink =
+      "https://www.youtube.com/watch?v=-goel9qSKvE";
+static String gitlink ="https://github.com/sdycode/Stick-Box-Game-Flutter";
   static Color p1color = Colors.pink;
+
   static Color p2color = Colors.orange;
   static Color linemarkedcolor = Colors.red;
   static Map<WhichColor, Color> colors = {
@@ -55,4 +62,8 @@ class C {
     WhichColor.boxmarked: Color.fromARGB(0, 216, 231, 236),
     WhichColor.boxNotMarked: Color.fromARGB(0, 239, 225, 242).withAlpha(0)
   };
+
+  static String sharetext = "Play and Enjoy Stick Box Game !!!";
+
+  
 }

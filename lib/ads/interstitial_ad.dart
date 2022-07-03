@@ -97,30 +97,7 @@ class InterstitialAdsAdmob {
         ));
   }
 
-  // void _createExitInterstitialAd() {
-  //   InterstitialAd.load(
-  //       adUnitId: AdsUnitID.exitinterstitialAdUnitId,
-  //       request: _request,
-  //       adLoadCallback: InterstitialAdLoadCallback(
-  //         onAdLoaded: (InterstitialAd ad) {
-  //           print('$ad exit loaded');
-  //           _exitInterstitialAd = ad;
-  //           _numExitInterstitialLoadAttempts = 0;
-  //         },
-  //         onAdFailedToLoad: (LoadAdError error) {
-  //           print('Exit InterstitialAd failed to load: $error.');
-  //           _numExitInterstitialLoadAttempts += 1;
-  //           _exitInterstitialAd = null;
-  //           if (_numExitInterstitialLoadAttempts <=
-  //               _maxExitFailedLoadAttempts) {
-  //             _createExitInterstitialAd();
-  //           }
-  //         },
-  //       ));
-  // }
-
  
-// int i, BuildContext context, Products products
   void showInterstitialAd() {
     print('showInterstitialAd adcalled');
     if (_interstitialAd == null) {

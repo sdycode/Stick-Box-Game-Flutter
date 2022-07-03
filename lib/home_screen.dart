@@ -146,8 +146,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _scaffoldKey.currentState!.openEndDrawer();
                   },
                   child: Container(
+                    // color: Colors.red,
+                    padding: EdgeInsets.all(w*0.02),
                       margin:
-                          EdgeInsets.only(top: t + w * 0.04, right: w * 0.04),
+                          EdgeInsets.only(top: t + w * 0.02, right: w * 0.02),
                       child: Image.asset(
                         'assets/menudots.png',
                         height: w * 0.08,
@@ -397,7 +399,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 Spacer(),
                 isSingle
-                    ? Row(
+                    ? 
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                       
                         children: [
                           Column(
                             children: [
@@ -483,6 +489,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ],
                       )
                     : Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                       
                         children: [
                           Column(
                             children: [

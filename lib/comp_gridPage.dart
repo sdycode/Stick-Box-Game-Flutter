@@ -182,7 +182,12 @@ class _CompGridPageState extends State<CompGridPage>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: showSettings
                           ? [back(), replay(), sound(), music(), setting()]
-                          : [back(), replay(), setting()]
+                          : [
+                              back(),
+                              replay(),
+                              // Text(ratio.toStringAsFixed(2)),
+                              setting()
+                            ]
                       // [
                       // InkWell(
                       //   onTap: () {
@@ -249,9 +254,10 @@ class _CompGridPageState extends State<CompGridPage>
                       ),
                 ),
               ),
-SizedBox(
-  height: h*0.01,
-),
+              SizedBox(
+                height: h * 0.01,
+              ),
+              Spacer(),
               showSettings
                   ? Container(
                       height: h * 0.05,
@@ -260,7 +266,7 @@ SizedBox(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.all(w*0.005),
+                            padding: EdgeInsets.all(w * 0.005),
                             child: Image.asset(
                               'assets/computer3.png',
                               width: w * 0.29,
@@ -296,6 +302,7 @@ SizedBox(
                       ),
                     )
                   : Container(),
+              Spacer(),
               showSettings
                   ? Container(
                       height: h * 0.05,
@@ -344,9 +351,9 @@ SizedBox(
                     )
                   : Container(),
 
-              // Spacer(),
-              iconswithCelebration(),
-              // Spacer(),
+              Spacer(),
+              showSettings ? Container() : iconswithCelebration(),
+              Spacer(),
               Container(
                   // color: Colors.red,
                   child: ClipRRect(
@@ -620,7 +627,7 @@ SizedBox(
               //       boxesinrow[gridno],
               // )
 
-              showSettings
+              showSettings || ratio < 1.54
                   ? Container()
                   : Container(
                       height: h * 0.08,
@@ -684,14 +691,16 @@ SizedBox(
                                   Text(
                                     'You',
                                     style: TextStyle(
-                                        fontSize: w * 0.05,
+                                       fontSize: showSettings  || ratio < 1.54
+                                              ? w * 0.028
+                                              : w * 0.043,
                                         fontWeight: turn1
                                             ? FontWeight.bold
                                             : FontWeight.normal),
                                   ),
                                 ],
                               )),
-                          showSettings
+                          showSettings || ratio < 1.54
                               ? Container(
                                   width: w * 0.08,
                                   child: FittedBox(
@@ -706,13 +715,13 @@ SizedBox(
                                   ),
                                 )
                               : Container(),
-                          showSettings
+                          showSettings || ratio < 1.54
                               ? Container(
                                   height: h * 0.04,
                                   width: 0.01,
                                 )
                               : Container(),
-                          showSettings
+                          showSettings || ratio < 1.54
                               ? Container(
                                   width: w * 0.08,
                                   child: FittedBox(
@@ -729,7 +738,7 @@ SizedBox(
                               : Container(),
                           Container(
                               height: h * 0.08,
-                              width: showSettings ? w * 0.32 : w * 0.45,
+                              width: showSettings   && ratio < 1.54 ? w * 0.32 : w * 0.45,
                               padding: EdgeInsets.all(h * 0.01),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(h * 0.03),
@@ -747,7 +756,7 @@ SizedBox(
                                     Text(
                                       'Computer',
                                       style: TextStyle(
-                                          fontSize: showSettings
+                                          fontSize: showSettings  || ratio < 1.54
                                               ? w * 0.028
                                               : w * 0.043,
                                           fontWeight: !turn1
@@ -1181,13 +1190,18 @@ SizedBox(
   }
 
   Widget showWinnerRow() {
-    double remaingH = h - (0.05 + 0.16 + 0.009) * h - w;
-    double fullradius = remaingH * 0.35;
-    double innerRadius = remaingH * 0.9 * 0.35;
+  
+    double remaingH = (h - (0.05 + 0.16 + 0.009) * h - w);
+    // double fullradius = remaingH * 0.35;
+    // double innerRadius = remaingH * 0.9 * 0.35;
+
+    double fullradius = min(remaingH * 0.30, w * 0.2);
+    double innerRadius = min(remaingH * 0.9 * 0.30, w * 0.2 * 0.9);
     print('winn $whoWins');
     return Container(
       height: remaingH * 0.7,
       width: w,
+      // color: Colors.red,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -1210,24 +1224,16 @@ SizedBox(
                   ? C.icons[widget.p1no]
                   : whoWins == 2
                       ? C.icons[widget.p2no]
-                      : 'assets/monkey1.gif')
-              // ? Image.asset(
-              //     C.icons[widget.p1no],
-              //     fit: BoxFit.cover,
-              //   )
-              // : Image.asset(
-              //     C.icons[widget.p2no],
-              //     fit: BoxFit.cover,
-              //   ),
-              ),
-          RotatedBox(
-            quarterTurns: 3,
+                      : 'assets/monkey1.gif')),
+          Transform.translate(
+            offset: Offset(w * 0.28, 0),
             child: Container(
               width: w * 0.28,
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(pi),
               // height: remaingH * 0.7,
               child: Image.asset(
                 'assets/celeb.gif',
-                fit: BoxFit.contain,
               ),
             ),
           ),
@@ -1333,12 +1339,16 @@ SizedBox(
   }
 
   Widget showPlayerIcons() {
-    double remaingH = h - (0.05 + 0.16 + 0.009) * h - w;
-    double fullradius = remaingH * 0.35;
-    double innerRadius = remaingH * 0.9 * 0.35;
-    print('turn11 $turn1');
+    
+      double fact = ratio < 1.54 ? 2 / ratio : 1;
+      print('ratt ${ratio} /      $fact         ');
+    double remaingH =max(10,( h - (0.05 + 0.16 + 0.009) * h - w)*fact);
+    double fullradius = min(remaingH * 0.30, w * 0.2);
+    double innerRadius = min(remaingH * 0.72 * 0.30, w * 0.2 * 0.72);
+    // print('turn11 $turn1  ${remaingH * 0.30}  /  ${w * 0.2}');
     return Container(
       height: remaingH * 0.7,
+      // color: Colors.blue,
       width: w,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1346,20 +1356,29 @@ SizedBox(
           CircleAvatar(
             backgroundColor: Colors.white.withAlpha(0),
             backgroundImage: turn1 ? AssetImage('assets/circnobg.gif') : null,
-            radius: ratio > 1.54 ? fullradius * 0.6 : fullradius,
+            radius:
+                // ratio > 1.54? fullradius * 0.6 :
+                fullradius * 1,
             child: CircleAvatar(
               backgroundColor: Colors.white.withAlpha(0),
-              radius: ratio > 1.54 ? innerRadius * 0.6 : innerRadius,
+              radius:
+                  // 50,
+                  // ratio > 1.54 ? innerRadius * 0.6 :
+                  innerRadius * 1,
               backgroundImage: AssetImage(C.icons[widget.p1no]),
             ),
           ),
           CircleAvatar(
-            radius: ratio > 1.54 ? fullradius * 0.6 : fullradius,
+            radius:
+                // ratio > 1.54 ? fullradius * 0.6 :
+                fullradius * 1,
             backgroundColor: Colors.white.withAlpha(0),
             backgroundImage: !turn1 ? AssetImage('assets/circnobg.gif') : null,
             child: CircleAvatar(
               backgroundColor: Colors.white.withAlpha(0),
-              radius: ratio > 1.54 ? innerRadius * 0.6 : innerRadius,
+              radius:
+                  // ratio > 1.54 ? innerRadius * 0.6 :
+                  innerRadius * 1,
               backgroundImage: AssetImage(C.icons[widget.p2no]),
             ),
           )
@@ -1375,15 +1394,35 @@ SizedBox(
         builder: (context) => playagainDialog());
   }
 
+  // void showSliderDialog() {
+  //   showDialog(
+  //       context: context,
+  //       barrierDismissible: true,
+  //       builder: (context) => sliderDialog());
+  // }
+
+  // sliderDialog() {
+  //   return Container(
+  //      margin: EdgeInsets.only(top: h * 0.15),
+  //     height: h*0.3,
+  //     width: w,
+  //     child: Column(
+  //       children: [
+
+  //       ],
+  //     ),
+  //   );
+  // }
+
   playagainDialog() {
     return Container(
-      margin: EdgeInsets.only(top: h * 0.55),
+      margin: EdgeInsets.only(top: h * 0.35),
       height: h * 0.185,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(w * 0.1)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(w * 0.05)),
       child: Dialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(w * 0.1)),
+            borderRadius: BorderRadius.circular(w * 0.05)),
         child: InkWell(
           onTap: () {
             isSound ? audioCache.play('boxdone.mp3') : () {};
@@ -1563,17 +1602,34 @@ SizedBox(
       });
       Shared.incrementGameCompleteCount();
       print('intert count ${Shared.getGameCompletedCount()} --- ');
-      if (Shared.getGameCompletedCount() % 3 == 0) {
+      if (gridno <= 4) {
+        if (Shared.getGameCompletedCount() % 3 == 0) {
+          InterstitialAdsAdmob.instance.showInterstitialAd();
+          if (Shared.getGameCompletedCount() % 20 == 0) {
+            Shared.resetGameCompletCount(0);
+          }
+        } else {
+          print('rated ${Shared.isRatedFun()}');
+          if (!Shared.isRatedFun() && Shared.getGameCompletedCount() == 15) {
+            showRateUsDialog();
+          }
+        }
+      } else if (gridno >= 5 && gridno < 6) {
+        if (Shared.getGameCompletedCount() % 2 == 0) {
+          InterstitialAdsAdmob.instance.showInterstitialAd();
+          if (Shared.getGameCompletedCount() % 20 == 0) {
+            Shared.resetGameCompletCount(0);
+          }
+        } else {
+          print('rated ${Shared.isRatedFun()}');
+          if (!Shared.isRatedFun() && Shared.getGameCompletedCount() == 15) {
+            showRateUsDialog();
+          }
+        }
+      } else if (gridno == 6) {
         InterstitialAdsAdmob.instance.showInterstitialAd();
-        if (Shared.getGameCompletedCount() % 20 == 0) {
-          Shared.resetGameCompletCount(0);
-        }
-      } else {
-        print('rated ${Shared.isRatedFun()}');
-        if (!Shared.isRatedFun() && Shared.getGameCompletedCount() == 15) {
-          showRateUsDialog();
-        }
       }
+
       Shared.getGameCompletedCount() != 15 ? showPlayAgainDialog() : () {};
     }
   }
@@ -1695,6 +1751,7 @@ SizedBox(
   }
 
   void resetLinesandBoxes() {
+    lastLineIndex = -1;
     countsList.clear();
     for (int i = 0; i < count * count; i++) {
       if (checkIsLine(i, count)) {

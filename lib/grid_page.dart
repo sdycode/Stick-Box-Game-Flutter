@@ -204,12 +204,12 @@ class _GridPageState extends State<GridPage> with WidgetsBindingObserver {
                               // Text(' ${(h / w).toStringAsFixed(2)} ' +
                               //     rem.toString() +
                               //     ' h ${h.round()} / w ${w.round()} / ${boxsize} / ${widget.x} / ${((w - boxsize) * 0.5).toStringAsFixed(1)}'),
-                              
+
                               setting()
                             ]),
                 ),
               ),
-
+              Spacer(),
               showSettings
                   ? Container(
                       height: h * 0.05,
@@ -218,7 +218,8 @@ class _GridPageState extends State<GridPage> with WidgetsBindingObserver {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Padding(
-                            padding:  EdgeInsets.only(top:h*0.006, bottom:h*0.006),
+                            padding: EdgeInsets.only(
+                                top: h * 0.006, bottom: h * 0.006),
                             child: Image.asset(
                               'assets/music.png',
                               width: w * 0.2,
@@ -254,12 +255,10 @@ class _GridPageState extends State<GridPage> with WidgetsBindingObserver {
                       ),
                     )
                   : Container(),
-              // Spacer(),
-              Container(
-                // color: Colors.green, 
+              Spacer(),
 
+              showSettings ? Container() : iconswithCelebration(),
 
-              child: iconswithCelebration()),
               Spacer(),
               Container(
                   // color: Colors.red,
@@ -296,8 +295,7 @@ class _GridPageState extends State<GridPage> with WidgetsBindingObserver {
                                   child: Transform.scale(
                                     scaleY: widget.x < 10 ? 1.5 : 1,
                                     child: Container(
-                                      color:
-                                          Colors.green.shade300.withAlpha(0),
+                                      color: Colors.green.shade300.withAlpha(0),
                                       child: ClipPath(
                                         clipper: MyPointsHLinesClipper(
                                             widget.x, widget.s),
@@ -482,104 +480,103 @@ class _GridPageState extends State<GridPage> with WidgetsBindingObserver {
               //       boxesinrow[gridno],
               // )
 
-          //   showSettings && ratio<1.54?  Container() :Container(
-          //       height: h * 0.08,
-          //       // color: Colors.purple,
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //         children: [
-          //           Container(
-          //             height: h * 0.08,
-          //             width: w * 0.35,
-          //             child: Center(
-          //               child: Text(
-          //                 getP1Count(),
-          //                 style: TextStyle(
-          //                     fontSize: h * 0.04,
-          //                     fontWeight:
-          //                         turn1 ? FontWeight.bold : FontWeight.normal),
-          //               ),
-          //             ),
-          //           ),
-          //           Container(
-          //             height: h * 0.08,
-          //             width: w * 0.35,
-          //             child: Center(
-          //               child: Text(
-          //                 getP2Count(),
-          //                 style: TextStyle(
-          //                     fontSize: h * 0.04,
-          //                     fontWeight:
-          //                         !turn1 ? FontWeight.bold : FontWeight.normal),
-          //               ),
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-             
-          //  showSettings && ratio<1.54? Container() :  Container(
-          //       height: h * 0.08,
-          //       // color: Colors.orange,
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //         children: [
-          //           Container(
-          //               height: h * 0.08,
-          //               width: w * 0.45,
-          //               padding: EdgeInsets.all(h * 0.01),
-          //               decoration: BoxDecoration(
-          //                 color: C.p1color.withAlpha(30),
-          //                 borderRadius: BorderRadius.circular(h * 0.03),
-          //                 border: turn1
-          //                     ? Border.all(width: 2, color: C.p1color)
-          //                     : null,
-          //               ),
-          //               child: Row(
-          //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //                 children: [
-          //                   Image.asset(C.icons[widget.p1no]),
-          //                   Text(
-          //                     'Player 1',
-          //                     style: TextStyle(
-          //                         fontSize: w * 0.06,
-          //                         fontWeight: turn1
-          //                             ? FontWeight.bold
-          //                             : FontWeight.normal),
-          //                   ),
-          //                 ],
-          //               )),
-          //           Container(
-          //               height: h * 0.08,
-          //               width: w * 0.45,
-          //               padding: EdgeInsets.all(h * 0.01),
-          //               decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.circular(h * 0.03),
-          //                 color: C.p2color.withAlpha(30),
-          //                 border: !turn1
-          //                     ? Border.all(width: 2, color: C.p2color)
-          //                     : null,
-          //               ),
-          //               child: Row(
-          //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //                 children: [
-          //                   Image.asset(C.icons[widget.p2no]),
-          //                   Text(
-          //                     'Player 2',
-          //                     style: TextStyle(
-          //                         fontSize: h * 0.03,
-          //                         fontWeight: !turn1
-          //                             ? FontWeight.bold
-          //                             : FontWeight.normal),
-          //                   ),
-          //                 ],
-          //               )),
-          //         ],
-          //       ),
-          //     ),
-           
+              //   showSettings && ratio<1.54?  Container() :Container(
+              //       height: h * 0.08,
+              //       // color: Colors.purple,
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //         children: [
+              //           Container(
+              //             height: h * 0.08,
+              //             width: w * 0.35,
+              //             child: Center(
+              //               child: Text(
+              //                 getP1Count(),
+              //                 style: TextStyle(
+              //                     fontSize: h * 0.04,
+              //                     fontWeight:
+              //                         turn1 ? FontWeight.bold : FontWeight.normal),
+              //               ),
+              //             ),
+              //           ),
+              //           Container(
+              //             height: h * 0.08,
+              //             width: w * 0.35,
+              //             child: Center(
+              //               child: Text(
+              //                 getP2Count(),
+              //                 style: TextStyle(
+              //                     fontSize: h * 0.04,
+              //                     fontWeight:
+              //                         !turn1 ? FontWeight.bold : FontWeight.normal),
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
 
-showSettings 
+              //  showSettings && ratio<1.54? Container() :  Container(
+              //       height: h * 0.08,
+              //       // color: Colors.orange,
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //         children: [
+              //           Container(
+              //               height: h * 0.08,
+              //               width: w * 0.45,
+              //               padding: EdgeInsets.all(h * 0.01),
+              //               decoration: BoxDecoration(
+              //                 color: C.p1color.withAlpha(30),
+              //                 borderRadius: BorderRadius.circular(h * 0.03),
+              //                 border: turn1
+              //                     ? Border.all(width: 2, color: C.p1color)
+              //                     : null,
+              //               ),
+              //               child: Row(
+              //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //                 children: [
+              //                   Image.asset(C.icons[widget.p1no]),
+              //                   Text(
+              //                     'Player 1',
+              //                     style: TextStyle(
+              //                         fontSize: w * 0.06,
+              //                         fontWeight: turn1
+              //                             ? FontWeight.bold
+              //                             : FontWeight.normal),
+              //                   ),
+              //                 ],
+              //               )),
+              //           Container(
+              //               height: h * 0.08,
+              //               width: w * 0.45,
+              //               padding: EdgeInsets.all(h * 0.01),
+              //               decoration: BoxDecoration(
+              //                 borderRadius: BorderRadius.circular(h * 0.03),
+              //                 color: C.p2color.withAlpha(30),
+              //                 border: !turn1
+              //                     ? Border.all(width: 2, color: C.p2color)
+              //                     : null,
+              //               ),
+              //               child: Row(
+              //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //                 children: [
+              //                   Image.asset(C.icons[widget.p2no]),
+              //                   Text(
+              //                     'Player 2',
+              //                     style: TextStyle(
+              //                         fontSize: h * 0.03,
+              //                         fontWeight: !turn1
+              //                             ? FontWeight.bold
+              //                             : FontWeight.normal),
+              //                   ),
+              //                 ],
+              //               )),
+              //         ],
+              //       ),
+              //     ),
+
+              showSettings  || ratio < 1.54
                   ? Container()
                   : Container(
                       height: h * 0.08,
@@ -626,7 +623,7 @@ showSettings
                         children: [
                           Container(
                               height: h * 0.08,
-                              width: showSettings? w * 0.32:w*0.45,
+                              width: showSettings ? w * 0.32 : w * 0.45,
                               padding: EdgeInsets.all(h * 0.01),
                               decoration: BoxDecoration(
                                 color: C.p1color.withAlpha(30),
@@ -641,51 +638,56 @@ showSettings
                                 children: [
                                   Image.asset(C.icons[widget.p1no]),
                                   Text(
-                                    'You',
+                                    'Player 1',
                                     style: TextStyle(
-                                        fontSize: w * 0.05,
+                                         fontSize: showSettings  || ratio < 1.54
+                                              ? w * 0.028
+                                              : w * 0.043,
                                         fontWeight: turn1
                                             ? FontWeight.bold
                                             : FontWeight.normal),
                                   ),
                                 ],
                               )),
-                          showSettings?    Container(
-                                width: w*0.08,
-                                child: FittedBox(
-                                  child: Text(
-                                       getP1Count(),
-                                style: TextStyle(
-                                    fontSize: h * 0.04,
-                                    fontWeight: turn1
-                                        ? FontWeight.bold
-                                        : FontWeight.normal),
-                              
+                          showSettings || ratio < 1.54
+                              ? Container(
+                                  width: w * 0.08,
+                                  child: FittedBox(
+                                    child: Text(
+                                      getP1Count(),
+                                      style: TextStyle(
+                                          fontSize: h * 0.04,
+                                          fontWeight: turn1
+                                              ? FontWeight.bold
+                                              : FontWeight.normal),
+                                    ),
                                   ),
-                                ),
-                              ):Container(),
-                           showSettings?   Container(
-                                height: h*0.04,
-                                width: 0.01,
-                              ):Container(),
-                          showSettings?      Container(
-                                width: w*0.08,
-                                child: FittedBox(
-                                  child: Text(
-                                       getP2Count(),
-                                style: TextStyle(
-                                    fontSize: h * 0.04,
-                                    fontWeight: turn1
-                                        ? FontWeight.bold
-                                        : FontWeight.normal),
-                              
+                                )
+                              : Container(),
+                          showSettings || ratio < 1.54
+                              ? Container(
+                                  height: h * 0.04,
+                                  width: 0.01,
+                                )
+                              : Container(),
+                          showSettings || ratio < 1.54
+                              ? Container(
+                                  width: w * 0.08,
+                                  child: FittedBox(
+                                    child: Text(
+                                      getP2Count(),
+                                      style: TextStyle(
+                                          fontSize: h * 0.04,
+                                          fontWeight: turn1
+                                              ? FontWeight.bold
+                                              : FontWeight.normal),
+                                    ),
                                   ),
-                                ),
-                              ):Container(),
-
+                                )
+                              : Container(),
                           Container(
                               height: h * 0.08,
-                              width: showSettings? w * 0.32:w*0.45,
+                              width: showSettings ? w * 0.32 : w * 0.45,
                               padding: EdgeInsets.all(h * 0.01),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(h * 0.03),
@@ -695,7 +697,6 @@ showSettings
                                     : null,
                               ),
                               child: InkWell(
-                               
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
@@ -704,7 +705,9 @@ showSettings
                                     Text(
                                       'Player 2',
                                       style: TextStyle(
-                                          fontSize: showSettings?w*0.03: w * 0.043,
+                                           fontSize: showSettings  || ratio < 1.54
+                                              ? w * 0.028
+                                              : w * 0.043,
                                           fontWeight: !turn1
                                               ? FontWeight.bold
                                               : FontWeight.normal),
@@ -716,8 +719,6 @@ showSettings
                       ),
                     ),
 
-
-           
               SizedBox(
                 height: h * 0.008,
               )
@@ -812,7 +813,7 @@ showSettings
           width: bw,
           height: bh,
           decoration: BoxDecoration(
-            color: lastLineIndex == i && isGameOver ? Colors.blue : color,
+            color: lastLineIndex == i ? Colors.blue : color,
             // border: lastLineIndex == i ? Border.all():null
           ),
           // child: Center(child: Text(i.toString())),
@@ -1267,10 +1268,12 @@ showSettings
   Widget showWinnerRow() {
     print('winn $whoWins');
 
-    double remaingH = h - (0.05 + 0.16 + 0.01) * h - w ;
+    double remaingH = h - (0.05 + 0.16 + 0.01) * h - w;
     rem = remaingH.round().toDouble();
-    double fullradius = remaingH * 0.35;
-    double innerRadius = remaingH * 0.9 * 0.35;
+    // double fullradius = remaingH * 0.35;
+    // double innerRadius = remaingH * 0.9 * 0.35;
+        double fullradius = min(remaingH * 0.30, w * 0.2);
+    double innerRadius = min(remaingH *0.9* 0.30, w * 0.2*0.9);
     return Container(
       height: remaingH * 0.7,
       width: w,
@@ -1278,11 +1281,11 @@ showSettings
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
+            // color: Colors.red,
             width: w * 0.28,
             // height: remaingH * 0.7,
             child: Image.asset(
               'assets/celeb.gif',
-
             ),
           ),
           Container(
@@ -1290,45 +1293,23 @@ showSettings
               // height: remaingH * 0.7,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-
+                // color: Colors.blue,
               ),
-              child:
-                  Image.asset(
-                      whoWins == 1
-                          ? C.icons[widget.p1no]
-                          : whoWins == 2
-                          ? C.icons[widget.p2no]
-                          : 'assets/monkey1.gif'
-                  )
-
-
-              // CircleAvatar(
-              //   radius: remaingH * 0.35,
-              //   backgroundColor: Colors.white.withAlpha(0),
-              //   backgroundImage: AssetImage(whoWins == 1
-              //       ? C.icons[widget.p1no]
-              //       : whoWins == 2
-              //           ? C.icons[widget.p2no]
-              //           : 'assets/monkey1.gif'),
-              // )
-
-              // ? Image.asset(
-              //     C.icons[widget.p1no],
-              //     fit: BoxFit.cover,
-              //   )
-              // : Image.asset(
-              //     C.icons[widget.p2no],
-              //     fit: BoxFit.cover,
-              //   ),
-              ),
-          RotatedBox(
-            quarterTurns: 3,
+              child: Image.asset(whoWins == 1
+                  ? C.icons[widget.p1no]
+                  : whoWins == 2
+                      ? C.icons[widget.p2no]
+                      : 'assets/monkey1.gif')),
+          Transform.translate(
+            offset: Offset(w * 0.28, 0),
             child: Container(
+              // color: Colors.red,
               width: w * 0.28,
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(pi),
               // height: remaingH * 0.7,
               child: Image.asset(
                 'assets/celeb.gif',
-
               ),
             ),
           ),
@@ -1338,11 +1319,13 @@ showSettings
   }
 
   Widget showPlayerIcons() {
-    double remaingH = h - ( 0.05 + 0.16 + 0.009) * h - w;
-       rem = remaingH.round().toDouble();
-
-    double fullradius = remaingH * 0.35;
-    double innerRadius = remaingH * 0.9 * 0.35;
+     double fact = ratio < 1.54 ? 2 / ratio : 1;
+    double remaingH = (h - (0.05 + 0.16 + 0.009) * h - w)*fact;
+    rem = remaingH.round().toDouble();
+    double fullradius = min(remaingH * 0.30, w * 0.2);
+    double innerRadius = min(remaingH *0.72* 0.30, w * 0.2*0.72);
+    // double fullradius = remaingH * 0.35;
+    // double innerRadius = remaingH * 0.72 * 0.35;
     print('turn11 $turn1');
     return Container(
       height: remaingH * 0.7,
@@ -1354,20 +1337,28 @@ showSettings
           CircleAvatar(
             backgroundColor: Colors.white.withAlpha(0),
             backgroundImage: turn1 ? AssetImage('assets/circnobg.gif') : null,
-            radius: ratio > 1.54 ? fullradius*0.6 :fullradius,
+            radius:
+                // ratio > 1.54 ? fullradius * 0.6 :
+                fullradius,
             child: CircleAvatar(
               backgroundColor: Colors.white.withAlpha(0),
-              radius: ratio > 1.54 ? innerRadius*0.6 :innerRadius,
+              radius:
+                  // ratio > 1.54 ? innerRadius * 0.6 :
+                  innerRadius,
               backgroundImage: AssetImage(C.icons[widget.p1no]),
             ),
           ),
           CircleAvatar(
-            radius: ratio > 1.54 ? fullradius*0.6 :fullradius,
+            radius:
+                // ratio > 1.54 ? fullradius * 0.6 :
+                fullradius,
             backgroundColor: Colors.white.withAlpha(0),
             backgroundImage: !turn1 ? AssetImage('assets/circnobg.gif') : null,
             child: CircleAvatar(
               backgroundColor: Colors.white.withAlpha(0),
-              radius: ratio > 1.54 ? innerRadius*0.6 :innerRadius,
+              radius:
+                  //  ratio > 1.54 ? innerRadius * 0.6 :
+                  innerRadius,
               backgroundImage: AssetImage(C.icons[widget.p2no]),
             ),
           )
@@ -1397,22 +1388,40 @@ showSettings
       });
       Shared.incrementGameCompleteCount();
       print('intert count ${Shared.getGameCompletedCount()} --- ');
-      if (Shared.getGameCompletedCount() % 3 == 0) {
+      if (gridno <= 4) {
+        if (Shared.getGameCompletedCount() % 3 == 0) {
+          InterstitialAdsAdmob.instance.showInterstitialAd();
+          if (Shared.getGameCompletedCount() % 20 == 0) {
+            Shared.resetGameCompletCount(0);
+          }
+        } else {
+          print('rated ${Shared.isRatedFun()}');
+          if (!Shared.isRatedFun() && Shared.getGameCompletedCount() == 15) {
+            showRateUsDialog();
+          }
+        }
+      } else if (gridno >= 5 && gridno < 6) {
+        if (Shared.getGameCompletedCount() % 2 == 0) {
+          InterstitialAdsAdmob.instance.showInterstitialAd();
+          if (Shared.getGameCompletedCount() % 20 == 0) {
+            Shared.resetGameCompletCount(0);
+          }
+        } else {
+          print('rated ${Shared.isRatedFun()}');
+          if (!Shared.isRatedFun() && Shared.getGameCompletedCount() == 15) {
+            showRateUsDialog();
+          }
+        }
+      } else if (gridno == 6) {
         InterstitialAdsAdmob.instance.showInterstitialAd();
-        if (Shared.getGameCompletedCount() % 20 == 0) {
-          Shared.resetGameCompletCount(0);
-        }
-      } else {
-        print('rated ${Shared.isRatedFun()}');
-        if (!Shared.isRatedFun() && Shared.getGameCompletedCount() == 15) {
-          showRateUsDialog();
-        }
       }
+
       Shared.getGameCompletedCount() != 15 ? showPlayAgainDialog() : () {};
     }
   }
 
   void resetLinesandBoxes() {
+    lastLineIndex = -1;
     for (int i = 0; i < count * count; i++) {
       if (checkIsLine(i, count)) {
         print('this is line @ $i');
@@ -1557,13 +1566,13 @@ showSettings
 
   playagainDialog() {
     return Container(
-      margin: EdgeInsets.only(top: h * 0.55),
+      margin: EdgeInsets.only(top: h * 0.35),
       height: h * 0.185,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(w * 0.1)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(w * 0.05)),
       child: Dialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(w * 0.1)),
+            borderRadius: BorderRadius.circular(w * 0.05)),
         child: InkWell(
           onTap: () {
             isSound ? audioCache.play('boxdone.mp3') : () {};
@@ -1693,8 +1702,7 @@ showSettings
                 quarterTurns: 1,
                 child: Image.asset(
                   'assets/musicsetting.png',
-                                    fit: BoxFit.cover,
-
+                  fit: BoxFit.cover,
                   height: h * 0.05,
                 ),
               ),
